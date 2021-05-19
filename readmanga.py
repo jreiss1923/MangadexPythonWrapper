@@ -229,6 +229,65 @@ class MangadexAPI:
         url = "https://api.mangadex.org/author/" + str(id)
 
         response = json.loads(requests.get(url, headers=self.json_session_token).text)
-        print(response)
         if response['result'] == "ok":
+            return response
+
+    def get_scanlation_group(self, limit=10, offset=0, ids=None, name=None):
+
+        params = {
+            "limit": limit,
+            "offset": offset,
+            "ids": ids,
+            "name": name
+        }
+
+        response = json.loads(requests.get("https://api.mangadex.org/group", headers=self.json_session_token, params=params).text)
+        if "results" in response:
+            return response
+
+    def get_chapter(self, limit=10, offset=0, ids=None, title=None, groups=None, uploader=None, manga=None, volume=None, chapter=None, translatedLanguage=None, createdAtSince=None, updatedAtSince=None, publishAtSince=None, order=None):
+
+        params = {
+            "limit": limit,
+            "offset": offset,
+            "ids": ids,
+            "title": title,
+            "groups": groups,
+            "uploader": uploader,
+            "manga": manga,
+            "volume": volume,
+            "chapter": chapter,
+            "translatedLanguage": translatedLanguage,
+            "createdAtSince": createdAtSince,
+            "updatedAtSince": updatedAtSince,
+            "publishAtSince": publishAtSince,
+            "order": order
+        }
+
+        response = json.loads(requests.get("https://api.mangadex.org/chapter", headers=self.json_session_token, params=params).text)
+        if "results" in response:
+            return response
+
+    def view_scanlation_group(self, id):
+
+        url = "https://api.mangadex.org/group/" + str(id)
+
+        response = json.loads(requests.get(url, headers=self.json_session_token).text)
+        if response["result"] == "ok":
+            return response
+
+    def get_logged_user_followed_manga_feed(self, limit=10, offset=0, locales=None, createdAtSince=None, updatedAtSince=None, publishAtSince=None, order=None):
+
+        params = {
+            "limit": limit,
+            "offset": offset,
+            "locales": locales,
+            "createdAtSince": createdAtSince,
+            "updatedAtSince": updatedAtSince,
+            "publishAtSince": publishAtSince,
+            "order": order
+        }
+
+        response = json.loads(requests.get("https://api.mangadex.org/user/follows/manga/feed", headers=self.json_session_token, params=params).text)
+        if "results" in response:
             return response
